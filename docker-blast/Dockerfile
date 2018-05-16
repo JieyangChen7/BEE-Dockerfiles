@@ -8,7 +8,9 @@ FROM cjy7117/ubuntu-ompi
 RUN apt-get update
 RUN apt-get -y install gcc g++ make wget git python
 
-WORKDIR /root
+USER beeuser
+
+WORKDIR /home/beeuser
 
 RUN git clone https://github.com/cooperative-computing-lab/makeflow-examples.git
 
