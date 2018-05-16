@@ -1,16 +1,12 @@
-#from ubuntu:14.04
 FROM ubuntu:16.04
 #proxy for LANL
-ENV http_proxy=http://proxyout.lanl.gov:8080
-ENV https_proxy=http://proxyout.lanl.gov:8080
+#ENV http_proxy=http://proxyout.lanl.gov:8080
+#ENV https_proxy=http://proxyout.lanl.gov:8080
 
 #set docker's UID/GID to be same as vm and host for dir sharing
 #when build, append: "--build-arg uid=$(id -u),gid=$(id -g)"
 #ARG uid=1000
 #ARG gid=1000
-
-#RUN echo $uid
-#RUN echo $gid
 
 USER root
 
@@ -35,23 +31,34 @@ RUN apt-get -y install \
     xutils-dev \
     wget
 
-#RUN groupadd -r albuntu -g $gid && useradd -r -m -g albuntu -u $uid albuntu -s /bin/bash
+#RUN groupadd -r beeuser -g $gid && useradd -r -m -g beeuser -u $uid beeuser -s /bin/bash
 
 RUN useradd -ms /bin/bash  beeuser
  
-
-
 #Install SSH
 RUN mkdir /var/run/sshd
 RUN sed -ri 's/^session\s+required\s+pam_loginuid.so$/session optional pam_loginuid.so/' /etc/pam.d/sshd
+RUN sed -i 's/#Port 22/Port 9222/' /etc/ssh/sshd_config
+RUN sed -i 's/Port 22/Port 9222/' /etc/ssh/sshd_config
+
 
 RUN mkdir /home/beeuser/.ssh/
-COPY id_rsa /home/beeuser/.ssh/
-COPY id_rsa.pub /home/beeuser/.ssh/
-COPY config /home/beeuser/.ssh/
-RUN chmod 0700 /home/beeuser/.ssh; chmod 0600 /home/beeuser/.ssh/*
+
+# Create SSH Key
+RUN ssh-keygen -t rsa -f /home/beeuser/.ssh/id_rsa -q -P ""
+
+# Add authorized_keys
 RUN cat /home/beeuser/.ssh/id_rsa.pub >> /home/beeuser/.ssh/authorized_keys
-RUN sed -i 's/Port 22/Port 9222/' /etc/ssh/sshd_config
+
+
+# Setup SSH config
+RUN echo "Host *" >> /home/beeuser/.ssh/config
+RUN echo "     Port 9222" >> /home/beeuser/.ssh/config
+RUN echo "     StrictHostKeyChecking no" >> /home/beeuser/.ssh/config
+RUN echo "     UserKnownHostsFile=/dev/null" >> /home/beeuser/.ssh/config
+
+RUN chmod 0700 /home/beeuser/.ssh; chmod 0600 /home/beeuser/.ssh/*
+
 RUN chown -R beeuser:beeuser /home/beeuser/.ssh
 
 #Install MPI
@@ -61,7 +68,7 @@ RUN cd ./openmpi-2.0.2 && ./configure CC=gcc CXX=g++ FC=gfortran && make -j 8 al
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 
 #if use /bin/sh
-#COPY .profile /home/albuntu/
+#COPY .profile /home/beeuser/
 
 #if use /bin/bash
 RUN (echo "LD_LIBRARY_PATH=/usr/local/lib"; echo "") >> /etc/environment

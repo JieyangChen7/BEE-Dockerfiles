@@ -1,6 +1,4 @@
 FROM cjy7117/ubuntu-ompi
-#FROM ubuntu:16.04
-
 
 #ENV http_proxy http://proxyout.lanl.gov:8080
 #ENV https_proxy http://proxyout.lanl.gov:8080
@@ -14,7 +12,9 @@ WORKDIR /home/beeuser
 
 RUN git clone https://github.com/cooperative-computing-lab/makeflow-examples.git
 
-WORKDIR /root/makeflow-examples/blast
+WORKDIR /home/beeuser/makeflow-examples/blast
+
+
 RUN wget ftp://ftp.ncbi.nlm.nih.gov/blast/executables/legacy.NOTSUPPORTED/2.2.26/blast-2.2.26-x64-linux.tar.gz
 RUN tar xvzf blast-2.2.26-x64-linux.tar.gz
 RUN cp blast-2.2.26/bin/blastall .
