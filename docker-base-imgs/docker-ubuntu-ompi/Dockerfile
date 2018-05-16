@@ -64,7 +64,7 @@ RUN chown -R beeuser:beeuser /home/beeuser/.ssh
 #Install MPI
 RUN wget https://www.open-mpi.org/software/ompi/v2.0/downloads/openmpi-2.0.2.tar.gz
 RUN tar -xzf openmpi-2.0.2.tar.gz
-RUN cd ./openmpi-2.0.2 && ./configure CC=gcc CXX=g++ FC=gfortran && make -j 8 all && make install
+RUN cd ./openmpi-2.0.2 && ./configure CC=gcc CXX=g++ FC=gfortran && make -j 8 all && make install && make clean 
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 
 #if use /bin/sh
