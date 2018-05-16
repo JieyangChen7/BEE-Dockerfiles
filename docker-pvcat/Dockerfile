@@ -2,11 +2,11 @@ from cjy7117/ubuntu-ompi
 
 USER root
 
-ENV http_proxy 'http://proxyout.lanl.gov:8080'
-ENV https_proxy 'http://proxyout.lanl.gov:8080'
-ENV no_proxy 'localhost,127.0.0.1'
+#ENV http_proxy 'http://proxyout.lanl.gov:8080'
+#ENV https_proxy 'http://proxyout.lanl.gov:8080'
+#ENV no_proxy 'localhost,127.0.0.1'
 
-RUN echo 'Acquire::http::Proxy "http://proxyout.lanl.gov:8080";' >> /etc/apt/apt.conf.d/docker-clean
+#RUN echo 'Acquire::http::Proxy "http://proxyout.lanl.gov:8080";' >> /etc/apt/apt.conf.d/docker-clean
 
 RUN apt-get update
 
