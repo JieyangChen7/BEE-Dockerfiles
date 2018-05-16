@@ -13,7 +13,8 @@ WORKDIR /root
 RUN git clone https://github.com/cooperative-computing-lab/makeflow-examples.git
 
 WORKDIR /root/makeflow-examples/blast
-RUN wget ftp://ftp.ncbi.nlm.nih.gov/blast/executables/legacy.NOTSUPPORTED/2.2.26/blast-2.2.26-x64-linux.tar.gzRUN tar xvzf blast-2.2.26-x64-linux.tar.gz
+RUN wget ftp://ftp.ncbi.nlm.nih.gov/blast/executables/legacy.NOTSUPPORTED/2.2.26/blast-2.2.26-x64-linux.tar.gz
+RUN tar xvzf blast-2.2.26-x64-linux.tar.gz
 RUN cp blast-2.2.26/bin/blastall .
 
 RUN wget ftp://ftp.ncbi.nlm.nih.gov/blast/db/nt.44.tar.gz
