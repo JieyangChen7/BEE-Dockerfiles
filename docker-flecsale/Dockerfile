@@ -7,8 +7,8 @@ MAINTAINER Pascal Grosset
 RUN ls /home
 
 # add proxy
-ENV http_proxy http://proxyout.lanl.gov:8080
-ENV https_proxy http://proxyout.lanl.gov:8080
+#ENV http_proxy http://proxyout.lanl.gov:8080
+#ENV https_proxy http://proxyout.lanl.gov:8080
 
 # Define default command.
 CMD ["bash"]
